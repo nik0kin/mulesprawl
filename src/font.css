@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'RBNo2';
+    src: url('assets/fonts/rbno2light_a.eot');
+    src: url('assets/fonts/rbno2light_a.eot') format('embedded-opentype'),
+    url('assets/fonts/rbno2light_a.woff') format('woff'),
+    url('assets/fonts/rbno2light_a.ttf') format('truetype'),
+    url('assets/fonts/rbno2light_a.svg#RBNo2LightAlternativeRegular') format('svg');
+}

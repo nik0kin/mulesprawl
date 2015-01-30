@@ -1,0 +1,12 @@
+body {
+    background-image:url('../assets/pageBkgrnd.png');
+    background-position:top center;
+    background-color:#cccccc;
+}
+
+div .border{
+    border:4px solid;
+    border-radius:25px;
+    background: #FFFFFF;
+    padding:5px 20px;
+}

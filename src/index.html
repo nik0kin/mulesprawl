@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mule Sprawl</title>
+    <script src="../lib/createjs-2013.12.12.min.js"></script>
+    <script src="../lib/jquery-1.11.0.min.js"></script>
+    <script src="../lib/underscore-min.js"></script>
+
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/bootstrap-theme.min.css">
+
+    <link rel="stylesheet" href="css/stylesheet.css">
+    <link rel="stylesheet" href="../css/boardView.css">
+
+    <script data-main="modules/main" src="../lib/require.js"></script>
+</head>
+
+
+<body>
+
+
+<div class="container">
+    <div class="row border">
+        <span id="dateLabel">Date Label</span> ===================
+        <span id="refreshLabel">Refresh Label</span> ===================
+        <span id="goldLabel">Gold Label</span><br>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div id="familyInfoDiv" class="row border">
+                FamilyInfo
+            </div>
+            <div id="spaceInfoDiv" class="row border">
+                Click Any Space
+            </div>
+            <br>
+            <div id="infoSpamDiv" class="row border">
+                info spam
+            </div>
+        </div>
+        <div class="col-md-8">
+            <canvas id="myCanvas"></canvas> <br>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+{
+  "name" : "MuleSprawl",
+
+  "turnSubmitStyle" : "playByMail",
+  "canAutoProgress": true,
+
+  "staticBoardSettings" : {
+    "boardStyle" : "squareGrid"
+  },
+
+  "gameSettings" : {
+    "playerLimit" : 1,
+    "customBoardSettings" : {
+      "width" : {
+        "min" : 20,
+        "max" : 100
+      },
+      "height" : {
+        "min" : 20,
+        "max" : 100
+      }
+    }
+  },
+
+  "rules" : {
+    "spaces" : [{
+      "className" : "MoveableSpace",
+      "spots" : 25,
+      "attributes" : {
+        "terrainType" : ["road", "grass", "water"]
+      }
+    }],
+    "pieces" : [],
+
+    "dynamicBoard" : true,
+    "board" : [],
+
+    "startingPieces": {
+      "each" : []
+    },
+
+    "actions" : ["PlaceCastle"]
+  }
+}

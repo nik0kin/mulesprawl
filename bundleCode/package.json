@@ -1,0 +1,18 @@
+{
+  "name": "mulesprawl",
+  "version": "1.0.0",
+  "description": "a mule experiment",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "@nikpoklitar",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "mule-utils" : "git+https://github.com/nik0kin/mule-utils.git#master",
+    "node-eden": "0.0.3",
+    "q": "^1.1.2",
+    "weighted": "^0.2.2"
+  }
+}
