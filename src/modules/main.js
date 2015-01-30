@@ -4,8 +4,8 @@ var GAME = {};
 GAME.SIZE = { x: 1800, y: 1000 };
 var TILESIZE = 50;
 
-define(['Loader', 'assets', 'Map', '../../dumbLib', '../../mule-js-sdk/sdk', './mulesprawlHelper'],
-  function(Loader, ourAssets, Map, dumbLib, sdk, mulesprawlHelper){
+define(['Loader', 'assets', 'Map', 'mule-sdk', './mulesprawlHelper'],
+  function(Loader, ourAssets, Map, sdk, mulesprawlHelper){
     var SDK = sdk('../../');
 
     var STATES = {pregame: 0, ingame: 1, loading: 2};
@@ -84,11 +84,11 @@ define(['Loader', 'assets', 'Map', '../../dumbLib', '../../mule-js-sdk/sdk', './
     };
 
     GAME.loadGame = function (callback) {
-      dumbLib.loadGameIdAndPlayerRelFromURL(function (result) {
-        currentGame = {_id: result.gameId };
+      var gameId = SDK.utils.getUrlParameter('gameId');
 
-        refreshGame(callback);
-      });
+      currentGame = {_id: gameId};
+
+      refreshGame(callback);
     };
 
     var counter = 0, timerCount = 2, firstTime = true;
@@ -104,7 +104,7 @@ define(['Loader', 'assets', 'Map', '../../dumbLib', '../../mule-js-sdk/sdk', './
       }
 
       SDK.Games.readQ(currentGame._id)
-        .done(function(game) {
+        .then(function(game) {
           currentGame = game;
 
           if (firstTime) {
@@ -114,7 +114,7 @@ define(['Loader', 'assets', 'Map', '../../dumbLib', '../../mule-js-sdk/sdk', './
           //checkWin();
 
           SDK.Historys.readGamesHistoryQ(currentGame._id)
-            .done(function(history) {
+            .then(function(history) {
               currentHistory = history;
 
               if (currentHistory.currentRound === currentRound) {
@@ -138,7 +138,7 @@ define(['Loader', 'assets', 'Map', '../../dumbLib', '../../mule-js-sdk/sdk', './
                 });
 
               SDK.GameStates.readGamesStateQ(currentGame._id)
-                .done(function(gameState) {
+                .then(function(gameState) {
                   //var fullBoard = SDK.GameBoards.createFullBoard(gameBoard.board, gameBoard.pieces);
                   currentGameState = gameState;
 
@@ -150,7 +150,7 @@ define(['Loader', 'assets', 'Map', '../../dumbLib', '../../mule-js-sdk/sdk', './
                     firstLoad = false;
                     SDK.Historys.markAllTurnsRead(currentHistory);
                     SDK.GameBoards.readGamesBoardQ(currentGame._id)
-                      .done(function(gameBoard) {
+                      .then(function(gameBoard) {
                         currentGameBoard = gameBoard;
                       });
                   } else {
