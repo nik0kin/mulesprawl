@@ -6,6 +6,8 @@ var randomUtils = require('mule-utils/randomUtils'),
   addNewHouse = require('../code/pieces/NewHouse'),
   XYToLocationId = require('../code/mapUtils').XYToLocationId;
 
+var HOUSES_PER_CASTLE_PLACE = 6;
+
 var castleSpots = [
   {x: 0, y: 0}, {x: 1, y: 0},
   {x: 0, y: 1}, {x: 1, y: 1}
@@ -91,7 +93,7 @@ exports.doQ = function (M, actionOwnerRel, params) {
   });
 
   //// starting houses + families ////
-  var chosenHouseSpots = randomUtils.pickRandom(houseSpots, 5);
+  var chosenHouseSpots = randomUtils.pickRandom(houseSpots, HOUSES_PER_CASTLE_PLACE);
   _.each(chosenHouseSpots, function (value, key) {
     var whereXY = {x: (params.where.x + value.x), y: (params.where.y + value.y)};
     addNewHouse(M, {

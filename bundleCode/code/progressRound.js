@@ -21,6 +21,8 @@ var HARVEST_TIME = 5,
   PREGNANCY_LENGTH = 9,
   SAFE_BIRTH_CHANCE = .8;
 
+var DEBUG_PLAGUE_CHANCE = 0;
+
 var progressRoundHook = function (M) {
   var promiseArray = [],
     currentRound = M.getCurrentRoundNumber(),
@@ -156,7 +158,7 @@ var progressRoundHook = function (M) {
     }
 
     //// death ////
-    var deathChance = DEATH_CHANCE;
+    var deathChance = DEATH_CHANCE + DEBUG_PLAGUE_CHANCE;
 
     if (farmer.attributes.age <= CHILD_DEATH_RANGE[1]) {
       deathChance += CHILD_DEATH_CHANCE;
@@ -172,6 +174,9 @@ var progressRoundHook = function (M) {
       });
       deathPieceIds.push(farmer.id);
       M.log(farmer.attributes.name + ' ' + farmer.attributes.familyName + ' died at ' + farmer.attributes.age);
+
+      farmer.attributes.dead = true;
+      M.setPiece(farmer.id, farmer); // need to set early, to delete farm
 
       //change partners status
       if (farmer.attributes.married === 'married' && farmer.attributes.sex === 'male') {
@@ -193,12 +198,19 @@ var progressRoundHook = function (M) {
       }
 
       // check if farm needs to be deleted
-      var piecesAtDeadmansLand = M.getPieces({spaceId: farmer.locationId});
-      if (piecesAtDeadmansLand.length === 2) {
-        // 2 = farm + lastAlive //BUG if everyone in the family dies at once, the farm wont be removed
-        var farm = piecesAtDeadmansLand[0].class === 'Farmer' ? piecesAtDeadmansLand[1] : piecesAtDeadmansLand[0];
-        deathPieceIds.push(farm.id);
-        M.log('removing deadmans farm: ' + farm.id);
+      var farmersAtDeadmansLand = M.getPieces({spaceId: farmer.locationId, className: 'Farmer'});
+      var deadmansLandHouse = M.getPieces({spaceId: farmer.locationId, className: 'House'})[0];
+
+      var allDead = true;
+      _.each(farmersAtDeadmansLand, function (f) {
+        if (!f.attributes.dead) {
+          allDead = false;
+        }
+      });
+
+      if (allDead) {
+        deathPieceIds.push(deadmansLandHouse.id);
+        M.log('removing deadmans farm: ' + deadmansLandHouse.id);
         _metadata.removedFarms.push(farmer.locationId);
       }
     }

@@ -186,6 +186,10 @@ define(['Loader', 'assets', 'Map', 'mule-sdk', './mulesprawlHelper'],
           });
           gameMap.drawBuilding('House', {x: loc[0], y: loc[1]}, {family: family});
         });
+        _.each(value.metadata.removedFarms, function (value) {
+          var loc = value.split(',');
+          gameMap.undrawBuilding({x: loc[0], y: loc[1]});
+        });
         updateInfoSpam(value.metadata);
       });
     };

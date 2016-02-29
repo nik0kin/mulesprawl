@@ -17,9 +17,18 @@ define(['Loader'], function (Loader) {
     House3: 'assets/houses/houseRed.png'
   };
 
+  var Bitmap = function (image, x, y, yOffset) {
+    var newBitmap = new createjs.Bitmap(image);
+    newBitmap.x = x * TERRAIN_SIZE;
+    newBitmap.y = y * TERRAIN_SIZE - yOffset * TERRAIN_SIZE;
+    newBitmap.scaleX = newBitmap.scaleY = scale;
+    return newBitmap;
+  };
+
   var Map = function (params) {
     var that = new createjs.Container(),
       map;
+    var buildingBitmapsBySpaceId = {};
 
     var screenOffset = {x: 0, y: 0};
     var placedCastle = params.gameBoard.playerVariables['p1'].placedCastle;
@@ -56,12 +65,10 @@ define(['Loader'], function (Loader) {
             }[r];
           }
 
-          var terrainImage = terrainImages[xValue]
-            newBitmap = new createjs.Bitmap(terrainImage);
-          newBitmap.x = x * TERRAIN_SIZE;
-          newBitmap.y = y * TERRAIN_SIZE - TERRAIN_SIZE;
-          newBitmap.scaleX = newBitmap.scaleY = scale;
+          var terrainImage = terrainImages[xValue];
+          var newBitmap = Bitmap(terrainImage, x, y, 1);
           that.addChild(newBitmap);
+          bitmapsBySpaceId[x+','+y] = newBitmap;
         });
       });
     };
@@ -77,18 +84,22 @@ define(['Loader'], function (Loader) {
     that.drawBuilding = function (type, loc, attributes) {
       var yOffset;
       if (type === 'House') {
-        yOffset = TERRAIN_SIZE;
+        yOffset = 1;
         type = getHouseType(attributes.familyName || attributes.family);
       }
       if (type === 'Castle') {
-        yOffset = TERRAIN_SIZE * 2;
+        yOffset = 2;
         placedCastle = true;
       }
-      var newBitmap = new createjs.Bitmap(buildingImages[type]);
-      newBitmap.x = loc.x * TERRAIN_SIZE;
-      newBitmap.y = loc.y * TERRAIN_SIZE - yOffset;
-      newBitmap.scaleX = newBitmap.scaleY = scale;
+      var newBitmap = Bitmap(buildingImages[type], loc.x, loc.y, yOffset);
       that.addChild(newBitmap);
+      buildingBitmapsBySpaceId[loc.x+','+loc.y] = newBitmap;
+    };
+
+    that.undrawBuilding = function (loc) {
+      if (loc && buildingBitmapsBySpaceId[loc.x+','+loc.y]) {
+        that.removeChild(buildingBitmapsBySpaceId[loc.x+','+loc.y]);
+      }
     };
 
     that.clickedSpace = function (x, y) {
