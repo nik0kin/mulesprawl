@@ -68,7 +68,7 @@ define(['Loader'], function (Loader) {
           var terrainImage = terrainImages[xValue];
           var newBitmap = Bitmap(terrainImage, x, y, 1);
           that.addChild(newBitmap);
-          bitmapsBySpaceId[x+','+y] = newBitmap;
+          buildingBitmapsBySpaceId[x+','+y] = newBitmap;
         });
       });
     };
